@@ -408,4 +408,4 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 ---
 
-Made with 💜 and ☕ by CodeGravity AI Team
+Made with 💜 and ☕ by MoonWiRaja
