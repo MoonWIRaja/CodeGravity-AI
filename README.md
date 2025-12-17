@@ -87,6 +87,7 @@ sudo apt-get install -y nodejs
 
 # Install Bun
 curl -fsSL https://bun.sh/install | bash
+export PATH="/root/.bun/bin:$PATH"
 
 # Install PostgreSQL
 sudo apt-get install postgresql postgresql-contrib
