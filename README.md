@@ -216,6 +216,9 @@ psql
 CREATE DATABASE codegravity;
 CREATE USER codegravity WITH ENCRYPTED PASSWORD 'your_password';
 GRANT ALL PRIVILEGES ON DATABASE codegravity TO codegravity;
+GRANT ALL ON SCHEMA public TO codegravity;
+ALTER SCHEMA public OWNER TO codegravity;
+ALTER USER codegravity WITH SUPERUSER;
 \q
 ```
 
