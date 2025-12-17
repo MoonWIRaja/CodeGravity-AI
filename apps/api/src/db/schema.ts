@@ -1,5 +1,15 @@
-import { pgTable, uuid, varchar, text, boolean, timestamp, 
-         integer, jsonb, pgEnum, uniqueIndex } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  uuid,
+  varchar,
+  text,
+  boolean,
+  timestamp,
+  integer,
+  jsonb,
+  pgEnum,
+  uniqueIndex,
+} from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 // ═══════════════════════════════════════════════════════════
@@ -7,23 +17,19 @@ import { relations } from 'drizzle-orm';
 // ═══════════════════════════════════════════════════════════
 
 export const aiProviderEnum = pgEnum('ai_provider', [
-  'openai', 'anthropic', 'gemini', 'deepseek', 'groq', 'ollama'
+  'openai', 'anthropic', 'gemini', 'deepseek', 'groq', 'ollama',
 ]);
 
-export const fileTypeEnum = pgEnum('file_type', [
-  'file', 'directory'
-]);
+export const fileTypeEnum = pgEnum('file_type', ['file', 'directory']);
 
-export const permissionEnum = pgEnum('permission', [
-  'read', 'write', 'admin'
-]);
+export const permissionEnum = pgEnum('permission', ['read', 'write', 'admin']);
 
 export const aiActionTypeEnum = pgEnum('ai_action_type', [
-  'chat', 'inline_edit', 'explain', 'fix_error', 'generate'
+  'chat', 'inline_edit', 'explain', 'fix_error', 'generate',
 ]);
 
 // ═══════════════════════════════════════════════════════════
-// USERS TABLE
+// USERS
 // ═══════════════════════════════════════════════════════════
 
 export const users = pgTable('users', {
@@ -39,7 +45,7 @@ export const users = pgTable('users', {
 });
 
 // ═══════════════════════════════════════════════════════════
-// SESSIONS TABLE
+// SESSIONS
 // ═══════════════════════════════════════════════════════════
 
 export const sessions = pgTable('sessions', {
@@ -53,7 +59,7 @@ export const sessions = pgTable('sessions', {
 });
 
 // ═══════════════════════════════════════════════════════════
-// SSH KEYS TABLE (untuk Git push/pull via SSH)
+// SSH KEYS
 // ═══════════════════════════════════════════════════════════
 
 export const sshKeys = pgTable('ssh_keys', {
@@ -69,7 +75,7 @@ export const sshKeys = pgTable('ssh_keys', {
 });
 
 // ═══════════════════════════════════════════════════════════
-// PROJECTS TABLE
+// PROJECTS
 // ═══════════════════════════════════════════════════════════
 
 export const projects = pgTable('projects', {
@@ -93,7 +99,7 @@ export const projects = pgTable('projects', {
 });
 
 // ═══════════════════════════════════════════════════════════
-// PROJECT SHARES TABLE
+// PROJECT SHARES
 // ═══════════════════════════════════════════════════════════
 
 export const projectShares = pgTable('project_shares', {
@@ -107,24 +113,28 @@ export const projectShares = pgTable('project_shares', {
 });
 
 // ═══════════════════════════════════════════════════════════
-// FILES TABLE
+// FILES
 // ═══════════════════════════════════════════════════════════
 
-export const files = pgTable('files', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  projectId: uuid('project_id').references(() => projects.id, { onDelete: 'cascade' }).notNull(),
-  path: varchar('path', { length: 1024 }).notNull(),
-  content: text('content'),
-  type: fileTypeEnum('type').default('file').notNull(),
-  sizeBytes: integer('size_bytes').default(0),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
-}, (table) => ({
-  projectPathIdx: uniqueIndex('project_path_idx').on(table.projectId, table.path),
-}));
+export const files = pgTable(
+  'files',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    projectId: uuid('project_id').references(() => projects.id, { onDelete: 'cascade' }).notNull(),
+    path: varchar('path', { length: 1024 }).notNull(),
+    content: text('content'),
+    type: fileTypeEnum('type').default('file').notNull(),
+    sizeBytes: integer('size_bytes').default(0),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  },
+  (table) => ({
+    projectPathIdx: uniqueIndex('project_path_idx').on(table.projectId, table.path),
+  }),
+);
 
 // ═══════════════════════════════════════════════════════════
-// FILE VERSIONS TABLE
+// FILE VERSIONS
 // ═══════════════════════════════════════════════════════════
 
 export const fileVersions = pgTable('file_versions', {
@@ -136,7 +146,7 @@ export const fileVersions = pgTable('file_versions', {
 });
 
 // ═══════════════════════════════════════════════════════════
-// AI SETTINGS TABLE (BYOK - Bring Your Own Key)
+// AI SETTINGS (ONE-TO-ONE)
 // ═══════════════════════════════════════════════════════════
 
 export const aiSettings = pgTable('ai_settings', {
@@ -152,7 +162,7 @@ export const aiSettings = pgTable('ai_settings', {
 });
 
 // ═══════════════════════════════════════════════════════════
-// AI PROVIDER KEYS (Multiple providers per user)
+// AI PROVIDER KEYS
 // ═══════════════════════════════════════════════════════════
 
 export const aiProviderKeys = pgTable('ai_provider_keys', {
@@ -166,7 +176,7 @@ export const aiProviderKeys = pgTable('ai_provider_keys', {
 });
 
 // ═══════════════════════════════════════════════════════════
-// AI HISTORY TABLE
+// AI HISTORY
 // ═══════════════════════════════════════════════════════════
 
 export const aiHistory = pgTable('ai_history', {
@@ -183,7 +193,7 @@ export const aiHistory = pgTable('ai_history', {
 });
 
 // ═══════════════════════════════════════════════════════════
-// TEMPLATES TABLE
+// TEMPLATES
 // ═══════════════════════════════════════════════════════════
 
 export const templates = pgTable('templates', {
@@ -206,11 +216,11 @@ export const templates = pgTable('templates', {
 // RELATIONS
 // ═══════════════════════════════════════════════════════════
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({ many, one }) => ({
   sessions: many(sessions),
   projects: many(projects),
   sshKeys: many(sshKeys),
-  aiSettings: many(aiSettings),
+  aiSettings: one(aiSettings),
   aiProviderKeys: many(aiProviderKeys),
   aiHistory: many(aiHistory),
 }));
@@ -224,4 +234,11 @@ export const projectsRelations = relations(projects, ({ one, many }) => ({
 export const filesRelations = relations(files, ({ one, many }) => ({
   project: one(projects, { fields: [files.projectId], references: [projects.id] }),
   versions: many(fileVersions),
+}));
+
+export const fileVersionsRelations = relations(fileVersions, ({ one }) => ({
+  file: one(files, {
+    fields: [fileVersions.fileId],
+    references: [files.id],
+  }),
 }));
