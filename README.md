@@ -103,7 +103,7 @@ sudo apt-get install redis-server
 
 ```bash
 # If cloning from repository
-git clone https://github.com/your-username/codegravity-ai.git
+git clone https://github.com/MoonWIRaja/codegravity-ai.git
 cd codegravity-ai
 
 # Or if starting fresh
@@ -208,7 +208,8 @@ sudo systemctl start postgresql
 
 ```bash
 # Connect to PostgreSQL
-psql -U postgres
+sudo -i -u postgres
+psql
 
 # In psql shell
 CREATE DATABASE codegravity;
