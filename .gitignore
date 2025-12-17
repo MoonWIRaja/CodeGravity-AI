@@ -1,0 +1,26 @@
+node_modules/
+dist/
+.svelte-kit/
+build/
+
+# Environment files
+.env
+.env.local
+*.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Drizzle
+drizzle/
